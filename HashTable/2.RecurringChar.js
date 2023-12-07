@@ -4,6 +4,9 @@
 
 const Recurring = (arr) => {
   const myob = {};
+  let mymax = -9999;
+  let checkundefined = arr.length;
+  let tmp = 0;
   for (let i = 0; i < arr.length; i++) {
     if (!myob[arr[i]]) {
       myob[arr[i]] = 1;
@@ -11,9 +14,6 @@ const Recurring = (arr) => {
       myob[arr[i]] += 1;
     }
   }
-  let mymax = -9999;
-  let checkundefined = arr.length;
-  let tmp = 0;
   for (const key in myob) {
     if (myob[key] === 1) {
       tmp++;
