@@ -1,31 +1,18 @@
-//ex = 10 --> 11 --> 12
-
-// let mylinklist = {
-//   head: {
-//     value: 10,
-//     next: {
-//       value: 11,
-//       next: {
-//         value: 12,
-//         next: null,
-//       },
-//     },
-//   },
-// };
-
 // Construct Node
 class Node {
   constructor(value) {
     this.value = value;
     this.next = null;
+    this.prev = null;
   }
 }
-// Linked List
-class Linked {
+// DoublyLinked List
+class DoublyLinked {
   constructor(value) {
     this.head = {
       value: value,
       next: null,
+      prev: null,
     };
     this.tail = this.head;
     this.length = 1;
@@ -33,6 +20,7 @@ class Linked {
 
   append(value) {
     const nodenew = new Node(value);
+    nodenew.prev = this.tail;
     this.tail.next = nodenew;
     this.tail = nodenew;
     this.length++;
@@ -42,6 +30,7 @@ class Linked {
   prepend(value) {
     const nodenew = new Node(value);
     nodenew.next = this.head;
+    this.head.prev = nodenew;
     this.head = nodenew;
     this.length++;
     return this;
@@ -66,9 +55,11 @@ class Linked {
     }
     const newNode = new Node(value);
     const leader = this.traverseToindex(index - 1);
-    const holdingPointer = leader.next;
+    const follow = leader.next;
     leader.next = newNode;
-    newNode.next = holdingPointer;
+    newNode.prev = leader;
+    newNode.next = follow;
+    follow.prev = newNode;
     this.length++;
     return this.printList();
   }
@@ -87,15 +78,19 @@ class Linked {
     const leader = this.traverseToindex(index - 1);
     const unwantedNode = leader.next;
     leader.next = unwantedNode.next;
+    unwantedNode.prev = leader;
     this.length--;
     return this.printList();
   }
 }
+// * - * - *
+// -> -> ->
+// <- <- <-
 
-const mylinklist = new Linked(10);
-mylinklist.prepend(5);
+const mylinklist = new DoublyLinked(10);
 mylinklist.append(15);
-mylinklist.insert(1, 50);
-mylinklist.insert(200, 40);
-mylinklist.insert(2, 30);
-console.log(mylinklist.printList());
+mylinklist.prepend(5);
+mylinklist.prepend(4);
+mylinklist.prepend(3);
+console.log(mylinklist.remove(2));
+// console.log(mylinklist.printList());
