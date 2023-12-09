@@ -45,9 +45,58 @@ class Linked {
     return this;
   }
 
-  insert(index, value) {}
+  printList() {
+    const arr = [];
+    let curNode = this.head;
+    while (curNode !== null) {
+      arr.push(curNode.value);
+      curNode = curNode.next;
+    }
+    return arr;
+  }
+
+  insert(index, value) {
+    if (index === 1) {
+      return this.prepend(value);
+    }
+    if (index >= this.length) {
+      return this.append(value);
+    }
+    const newNode = {
+      value: value,
+      next: null,
+    };
+    const leader = this.traverseToindex(index - 1);
+    const holdingPointer = leader.next;
+    leader.next = newNode;
+    newNode.next = holdingPointer;
+    this.length++;
+    return this.printList();
+  }
+
+  traverseToindex(index) {
+    let counter = 0;
+    let currentNode = this.head;
+    while (counter !== index) {
+      currentNode = currentNode.next;
+      counter++;
+    }
+    return currentNode;
+  }
+
+  remove(index) {
+    const leader = this.traverseToindex(index - 1);
+    const unwantedNode = leader.next;
+    leader.next = unwantedNode.next;
+    this.length--;
+    return this.printList();
+  }
 }
 
 const mylinklist = new Linked(10);
 mylinklist.prepend(5);
-console.log(mylinklist);
+mylinklist.append(15);
+mylinklist.insert(1, 50);
+mylinklist.insert(200, 40);
+mylinklist.insert(2, 30);
+console.log(mylinklist.printList());
